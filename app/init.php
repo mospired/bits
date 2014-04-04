@@ -12,5 +12,5 @@
 
 require "routes/signup.php";
 require "routes/profile.php";
-require "routes/log-in.php";
+require "routes/login.php";
 require "routes/home.php";

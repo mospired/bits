@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <base href="/">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Bits | Building php in bits">
+    <meta name="keywords" content="go where you want, when you want, how you want">
+    {% block head %}
+    <title>Bits | {% block title %}{% endblock %}</title>
+    <link href="/assets/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/assets/css/cover.css" rel="stylesheet">
+    {% endblock %}
+</head>
+<body>
+    {% block content %}{% endblock %}
+    {% block js %}
+    <script src="/assets/js/jquery.min.js"></script>
+    <script src="/assets/js/bootstrap.min.js"></script>
+    <script src="/assets/js/docs.min.js"></script>
+    {% endblock %}
+</body>
+</html>
