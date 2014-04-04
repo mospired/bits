@@ -1,0 +1,46 @@
+{
+  "database": {
+    "name": "bits",
+    "host": "localhost",
+    "port": 27017
+  },
+  "services": {
+    "mandrill": {
+      "api_key": "<get your own>",
+      "sender": {
+        "name": "Bits ",
+        "email": "team@bits.com",
+        "reply_to": "team@bits.com"
+      }
+    },
+    "mailchimp": {
+      "api_key": "<get your own>"
+    }
+  },
+  "app": {
+    "env": {
+      "debug": true,
+      "log.enabled": true,
+      "mode": "development"
+    },
+    "cookies": {
+      "name": "_bits",
+      "encrypt": false,
+      "secure": false,
+      "httponly": false,
+      "secret_key": "super_secret ",
+      "domain": "bits.dev",
+      "expires": "2 weeks"
+    },
+    "sessions": {
+      "remember_me_seconds": 2419200,
+      "cookie_lifetime": 2419200,
+      "use_cookies": true,
+      "name": "_bits_session",
+      "cookie_domain": "bits.dev"
+    },
+    "secured.urls": [
+      "/profile/"
+    ]
+  }
+}

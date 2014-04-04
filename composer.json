@@ -1,6 +1,8 @@
 {
   "require": {
     "slim/slim": "2.3.*",
+    "slim/views": "0.1.*",
+    "slim/extras": "dev-master",
     "twig/twig": "1.*",
     "mandrill/mandrill": "1.0.*",
     "drewm/mailchimp-api": "dev-master",
@@ -20,7 +22,7 @@
   },
   "minimum-stability": "stable",
   "autoload": {
-    "psr-4": {
+    "psr-0": {
       "Bits": "bin/src/"
     }
   }
