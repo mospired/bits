@@ -1,8 +1,8 @@
 bits
 ====
-A sample repo to illustrate how one can build a php application using modules from various php frameworks.
+A sample repo to illustrate how one can build a php application using packages* from various php frameworks.
 
-Modules used:
+Packages used:
  - Slim Php
  - Zend Authentication
  - Zend Cache
@@ -13,3 +13,6 @@ Modules used:
  - Pimple
  - PhpResque/Fresque
  - Guzzle HTTP
+ 
+To see all package versions checkout the composer.json
+
