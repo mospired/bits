@@ -8,10 +8,10 @@
 
 namespace Bits\Middleware;
 
-use \Slim\Middleware;
-use \Slim\Views\Twig;
-use \Slim\Views\TwigExtension;
-use \Twig_Extension_Debug;
+use Slim\Middleware;
+use Slim\Views\Twig;
+use Slim\Views\TwigExtension;
+use Twig_Extension_Debug;
 
 /**
  * View Middleware

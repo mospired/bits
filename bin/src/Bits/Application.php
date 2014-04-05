@@ -16,13 +16,11 @@ use Doctrine\MongoDB\Connection;
 use Doctrine\ODM\MongoDB\Configuration;
 use Doctrine\ODM\MongoDB\DocumentManager;
 use Doctrine\ODM\MongoDB\Mapping\Driver\AnnotationDriver;
-use Doctrine\Common\Cache\MemcacheCache;
 
 use Zend\Cache\StorageFactory;
 use Zend\Session\SessionManager;
 use Zend\Session\Config\SessionConfig;
 use Zend\Session\SaveHandler\Cache;
-use Zend\Session\Container;
 use Zend\Authentication\AuthenticationService;
 use Zend\Authentication\Storage\Session as SessionStorage;
 
@@ -34,7 +32,7 @@ class Application extends Pimple
     /**
      * Application
      *
-     * Refrect on the class and appropriately define services/parameters
+     * Reflect on the class and appropriately define services/parameters
      * See http://pimple.sensiolabs.org/ for options
      */
     public function __construct()
@@ -53,8 +51,7 @@ class Application extends Pimple
     }
 
     /**
-     * Return the application environemnt configuration options
-     * @return Object
+     * Set the application environment configuration options
      */
     public function _initConfig()
     {
@@ -67,7 +64,7 @@ class Application extends Pimple
     }
 
     /**
-     * Connect to MongoDb and return a doctrine document manager
+     * Connect to MongoDb and attach a doctrine document manager
      * See http://docs.doctrine-project.org/projects/doctrine-mongodb-odm/en/latest/reference/introduction.html
      *
      * @return DocumentManager
@@ -77,7 +74,9 @@ class Application extends Pimple
     {
         $container = $this;
         $this['documentManager'] =  $this->share(function () use ($container) {
+
             $dbConfigs = $container['configs']['database'];
+
             try{
 
                 $connection_url = "mongodb://{$dbConfigs['host']}:{$dbConfigs['port']}/{$dbConfigs['name']}";
@@ -88,14 +87,23 @@ class Application extends Pimple
                  * setup Doctrine configuration
                  */
                 $config = new Configuration();
-                $config->setProxyDir(BIN_PATH.'/src/Bits/Documents/Proxies');
+                $config->setProxyDir(
+                    BIN_PATH.'/src/Bits/Documents/Proxies');
                 $config->setProxyNamespace('Proxies');
-                $config->setHydratorDir(BIN_PATH.'/src/Bits/Documents/Hydrators');
+
+                $config->setHydratorDir(
+                    BIN_PATH.'/src/Bits/Documents/Hydrators');
                 $config->setHydratorNamespace('Hydrators');
-                $config->setMetadataDriverImpl(AnnotationDriver::create(BIN_PATH.'/src/Bits/Documents'));
+
+                $config->setMetadataDriverImpl(
+                    AnnotationDriver::create(BIN_PATH.'/src/Bits/Documents'));
+
                 $config->setDefaultDB($dbConfigs['name']);
 
-                return DocumentManager::create( new Connection($connection_url), $config);
+                $documentManager = DocumentManager::create( new Connection($connection_url), $config);
+
+                return $documentManager;
+
 
             }catch(Exception $e){
                 error_log($e->getMessage());
@@ -104,7 +112,7 @@ class Application extends Pimple
     }  //
 
     /**
-     * Initialize Mandrill email
+     * Attach Mandrill transaction email service
      * See https://mandrillapp.com/api/docs/index.php.html
      *
      * @return Mandrill
@@ -128,9 +136,12 @@ class Application extends Pimple
     {
         $container = $this;
         $this['cacheManager'] =  $this->share(function () use ($container) {
-            $cache  = StorageFactory::adapterFactory('filesystem', ['ttl' => 2419200,'cache_dir'=>CACHE_DIR.'/sessions']);
-            $plugin = StorageFactory::pluginFactory('exception_handler',['throw_exceptions' => true]);
-            $cache->addPlugin($plugin);
+
+            $cache  = StorageFactory::adapterFactory('filesystem', [
+                'ttl' => 2419200,
+                'cache_dir'=>CACHE_DIR.'/sessions'
+                ]);
+
             return $cache;
         });
     }
@@ -148,18 +159,22 @@ class Application extends Pimple
         $this['sessionManager'] = $this->share( function () use ($container){
 
             $sessionConfigs = $container['configs']['app']['sessions'];
+
             $saveHandler = new Cache($container['cacheManager']);
+
             $config = new SessionConfig();
             $config->setOptions($sessionConfigs);
-            $manager= new SessionManager($config);
-            $manager->setSaveHandler($saveHandler);
-            Container::setDefaultManager($manager);
-            return $manager;
+
+            $sessionManager= new SessionManager($config);
+            $sessionManager->setSaveHandler($saveHandler);
+
+
+            return $sessionManager;
         });
     }
 
     /**
-     * Setup an authentication service
+     * Attach an authentication service
      * See http://framework.zend.com/manual/2.0/en/modules/zend.authentication.intro.html
      *
      * @return Zend\Authentication\AuthenticationService
@@ -170,8 +185,12 @@ class Application extends Pimple
 
         $this['authenticationService'] = $this->share( function () use ($container){
             $sessionStorage = new SessionStorage('Bits','storage', $container['sessionManager']);
+
             $auth= new AuthenticationService();
-            return $auth->setStorage($sessionStorage);
+            $auth->setStorage($sessionStorage);
+
+            return $auth;
+
         });
     }
 }

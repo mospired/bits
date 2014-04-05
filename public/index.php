@@ -26,8 +26,6 @@ use Bits\Middleware\View;
 // instantiate my application (pimple)
 $bits = new Application();
 
-
-
 $app = new Slim($bits['configs']['app']);
 $app->setName('bits');
 $app->add(new View());

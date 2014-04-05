@@ -46,13 +46,6 @@ class Member
      */
     protected $email;
 
-    /**
-     * Avatar
-     * @var string
-     * @ODM\String
-     */
-    protected $avatar;
-
 
 
     /**
