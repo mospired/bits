@@ -10,7 +10,7 @@ use Bits\Authentication\Adapter as AuthAdapter;
 use Zend\Authentication\Result;
 
 /**
- * Login form display
+ * Display Login form
  */
 $app->get('/login/',function() use ($app,$bits){
 
@@ -27,7 +27,7 @@ $app->get('/login/',function() use ($app,$bits){
 /**
  * Process Login form
  */
-$app->post('/login/',function() use ($app,$mapster){
+$app->post('/login/',function() use ($app,$bits){
 
     $email = filter_var($app->request()->post('email'), FILTER_SANITIZE_EMAIL);
 
